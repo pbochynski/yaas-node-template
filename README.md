@@ -29,6 +29,10 @@ Then open http://localhost:3000 in web browser. You will see api-console and you
 	
 # Execute tests
 
+Install mocha:
+	
+	npm install -g mocha
+	
 Run command:
 	
 	mocha
