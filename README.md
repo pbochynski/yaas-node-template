@@ -52,7 +52,6 @@ If you want to modify RAML of wishlist service you can start api-designer with t
 Open http://localhost:3000/api-designer/ to browse api-designer. If you have service already running you have to stop it first 
 or change code to use different port.
 
-# Quick code guide
 
 
 
