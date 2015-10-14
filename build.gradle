@@ -1,0 +1,96 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath group: 'org.cloudfoundry', name: 'cf-gradle-plugin', version: '1.1.2'
+	}
+}
+
+apply plugin: "groovy"
+
+import org.cloudfoundry.client.lib.domain.CloudApplication
+import org.cloudfoundry.gradle.tasks.AbstractCloudFoundryTask
+import org.cloudfoundry.gradle.tasks.DeployCloudFoundryHelper
+
+apply plugin: 'cloudfoundry'
+apply from: 'deploy.gradle'
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '2.3'
+}
+
+task stopInactiveVariantInstances(type: StopInactiveVariantInstances)
+task stopAllPreVariantsInstances(type : StopAllPreVariantsInstances)
+
+@Mixin([DeployCloudFoundryHelper])
+class StopInactiveVariantInstances extends AbstractCloudFoundryTask {
+
+	StopInactiveVariantInstances() {
+		super()
+	}
+
+	@TaskAction
+	stop() {
+
+		withCloudFoundryClient {
+
+			def apps = client.applications
+			String next = findNextVariantToDeploy(application, apps)
+
+			applyVariantSuffix(next)
+
+			try {
+				CloudApplication app = client.getApplication(application)
+
+				if (app.state != CloudApplication.AppState.STOPPED) {
+					log "## stoping ${application} ##"
+					client.stopApplication(application)
+				} else {
+					log "## ${application} already stopped ##"
+				}
+			} catch (Exception ex) {
+				log "## ${application} no application to stop found"
+			}
+		}
+	}
+}
+
+@Mixin([DeployCloudFoundryHelper])
+class StopAllPreVariantsInstances extends AbstractCloudFoundryTask {
+
+	StopAllPreVariantsInstances() {
+		super()
+	}
+
+	@TaskAction
+	stop() {
+
+		withCloudFoundryClient {
+
+			def apps = client.applications
+			String next = findNextVariantToDeploy(application, apps)
+			log next
+			List<String> preApps = findMappedVariants(application, apps)
+			preApps.each {String name -> log name
+				applyVariantSuffix(name)
+			}
+			preApps.add(next)
+			preApps.each {String appName ->
+				try {
+					CloudApplication app = client.getApplication(appName)
+
+					if (app.state != CloudApplication.AppState.STOPPED) {
+						log "## stoping ${application} ##"
+						client.stopApplication(appName)
+					} else {
+						log "## ${appName} already stopped ##"
+					}
+				} catch (Exception ex) {
+					log "## ${appName} no application to stop found"
+				}
+			}
+
+		}
+	}
+}

@@ -1,0 +1,59 @@
+cloudfoundry {
+	application = 'wishlists'
+	hosts = [application]
+	host = application
+	buildpack = 'nodejs_buildpack'
+	file = file('.')
+	memory = 256
+	healthCheckTimeout = 180
+	trustSelfSignedCerts = true
+	variants = ['-blue', '-green']
+	env = [
+			"LANG"              : "en_US.UTF-8",
+			"TEAM_NAME"         : "toad",
+			"CF_STARTUP_TIMEOUT": "360",
+			"APP_NAME"      : application,
+	]
+	command = 'node index.js'
+	username = 'team-toad@sap.com'
+	space = 'toad'
+}
+if (project.hasProperty('aws-prod')) {
+	cloudfoundry {
+		target = 'http://api.us-east.cf.yaas.io'
+		organization = "core-prod"
+		space = 'toad'
+		domain = 'us-east.internal.yaas.io'
+		instances = 2
+		env << [
+				"ENV_NAME"      : "core-prod",
+				"NODE_ENV"      : "aws-prod"
+		]
+	}
+}
+if (project.hasProperty('pivotal')) {
+	cloudfoundry {
+		target = 'https://api.run.pivotal.io'
+		organization = 'yaas-pl'
+		space = 'development'
+		domain = 'cfapps.io'
+		instances = 1
+		env << [
+				"NODE_ENV"      : "pivotal"
+		]
+	}
+}
+
+
+if (project.hasProperty('aws-stage')) {
+	cloudfoundry {
+		target = 'https://api.us-east.stage.cf.yaas.io'
+		organization = "core-stage"
+		domain = 'us-east.stage.internal.yaas.io'
+		instances = 2
+		env << [
+				"ENV_NAME"      : "core-stage",
+				"NODE_ENV"      : "aws-stage"
+		]
+	}
+}
