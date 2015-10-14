@@ -17,7 +17,7 @@ resourceTypes:
   - !include https://api.yaas.io/patterns/v2/resource-type-element.yaml
   - !include https://api.yaas.io/patterns/v1/resource-type-collection.yaml
 
-/wishlists:
+/{tenant}/wishlists:
   type: collection
   is: [oauth2]
   get:

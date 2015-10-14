@@ -8,7 +8,7 @@ describe('Whishlist contract test', function(){
 	var listId;
 	it('should create new wishlist', function(done){
 		request(app)
-			.post('/wishlists')
+			.post('/sampletenant/wishlists')
 			.send(example)
 			.expect(200)
 			.end(function (err, res){
@@ -19,7 +19,7 @@ describe('Whishlist contract test', function(){
 	});
 	it('should get example wishlist', function(done){
 		request(app)
-			.get('/wishlists/'+listId)
+			.get('/sampletenant/wishlists/'+listId)
 			.expect(200)
 			.end(function (err, res){
 				if (err) throw err;
@@ -31,7 +31,7 @@ describe('Whishlist contract test', function(){
 	});
 	it('should update wishlist', function(done){
 		request(app)
-			.put('/wishlists/'+listId)
+			.put('/sampletenant/wishlists/'+listId)
 			.send({owner:"me",title:"myList"})
 			.expect(200)
 			.end(function (err, res){
@@ -42,7 +42,7 @@ describe('Whishlist contract test', function(){
 	});
 	it('should get updated wishlist', function(done){
 		request(app)
-			.get('/wishlists/'+listId)
+			.get('/sampletenant/wishlists/'+listId)
 			.expect(200)
 			.end(function (err, res){
 				if (err) throw err;
@@ -54,12 +54,12 @@ describe('Whishlist contract test', function(){
 	});
 	it('should delete wishlist', function(done){
 		request(app)
-			.del('/wishlists/'+listId)
+			.del('/sampletenant/wishlists/'+listId)
 			.expect(200, done);
 	});
 	it('should return 404 for not existing wishlist', function(done){
 		request(app)
-			.get('/wishlists/notexisting')
+			.get('/sampletenant/wishlists/notexisting')
 			.expect(404, done);
 	});
 
