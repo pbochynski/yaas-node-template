@@ -14,11 +14,13 @@
     "express": "^4.13.3",
     "express-raml-store": "^1.2.0",
     "lru-cache": "^2.7.0",
+    "node-cache": "^3.0.0",
     "node-uuid": "^1.4.3",
     "path": "^0.12.7",
     "request": "^2.65.0"
   },
   "devDependencies": {
+    "nock": "^2.15.0",
     "should": "^7.1.0",
     "supertest": "^1.1.0"
   }
