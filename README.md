@@ -37,6 +37,7 @@ Run command:
 	
 	mocha
 	
+	
 # Blue-green deployment
 
 OS X or Linux:
@@ -47,18 +48,53 @@ Windows (probably):
 	
 	gradlew.bat cfDeploy cfSwapDeployed -PcfUsername=xxxx -PcfPassword=xxxxx -Ppivotal
 	
-# Edit RAML with api-designer
+
+# What is there?
+
+## Embedded api-designer
  
-If you want to modify RAML of wishlist service you can start api-designer with this command:
+In YaaS we promote API first approach. We use (RAML)[http://raml.org/] to describe API. This template has embedded (api-designer)[https://github.com/mulesoft/api-designer]
+to simplify design of your API. If you want to modify RAML of wishlist service you can start api-designer with this command:
 
 	node api-designer.js
 	
-Open http://localhost:3000/api-designer/ to browse api-designer. If you have service already running you have to stop it first 
-or change code to use different port.
+Open http://localhost:3000/api-designer/ to browse api-designer. 
+
+## Embedded api-console
+
+To become successful your API should be easy to play with. That's why when you open this service root URL in the browser you will 
+be redirected to the (api-console)[https://github.com/mulesoft/api-console] of your service. You can read about API and try it.
 
 
+## Multi-tenancy
+
+In YaaS we build API platform for multiple brands (tenants). Tenant is a separate business activity that doesn't share data with others.
+What does it mean for API providers? For simple stateless services nothing. But if you store any any data or offer any functionality 
+that depends on customer context (and this context is persistent) - you have to build multi-tenancy in your service.
+
+### Example
+
+Basic version of wishlist service doesn't offer multitenancy. It cannot be shared by multiple businesses. If you want to offer 
+functionality of managing wishlists to many online shops, it is not desired that manager from first shop can see wishlists created 
+in another. In single tenant model you just create another instance of wishlist service that is used by second shop. But having
+hundreds or thousands of customers will make your life miserable. Just imagine thousands of servers, and how you will deployment, 
+ security, updates for this number of servers. Think also about cost efficiency.
 
 
+## Tests with real dependencies
+
+Tests are written with mocked document repository service. If you want to use real document repository just disable NOCK before executing tests:
+
+	NOCK_OFF=true mocha
+	
+Real implementation require YaaS Client credentials provided in the configuration. Check it in the (config/default.json)[config/default.json]:
+
+	    "client_id": "setByEnv",
+        "client_secret": "setByEnv",
+        "yaas_client": "setByEnv"
+
+
+You can set them by environment variables. See names of variables  [config/custom-environment-variables.json](config/custom-environment-variables.json)
 
 
 
