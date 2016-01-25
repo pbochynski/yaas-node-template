@@ -69,6 +69,10 @@ be redirected to the (api-console)[https://github.com/mulesoft/api-console] of y
 Embedded api-console works also if application is behind API proxy (base path is different). 
 See details in: [public/api-console/index.html](public/api-console/index.html)
 
+There is also support for automatic token retrieval for client_credential grant. You can just use your client_id and client_secret, 
+and token will be automatically retrieved and used for the request. For details check _securitySchemes_ in 
+[RAML file](public/api-console/raml/wishlist.raml).  
+
 ## Configuration
 This template comes with config module. It allows you to define configuration in simple json file 
 [(default.json)](config/default.json). You can easily create different profiles for different environments - just create
