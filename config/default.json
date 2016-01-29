@@ -1,3 +1,12 @@
 {
-  "defaultPort": 3000
+  "defaultPort": 3000,
+  "oauth": {
+    "tokenUrl": "https://api.yaas.io/hybris/oauth2/v1/token",
+    "client_id": "setByEnv",
+    "client_secret": "setByEnv",
+    "yaas_client": "setByEnv"
+  },
+  "repoUrl": "https://api.yaas.io/hybris/document/v1",
+  "testTenant" : "wishlisttest"
+
 }

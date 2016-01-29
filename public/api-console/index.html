@@ -9,13 +9,16 @@
 
 </head>
 <body ng-app="ramlConsoleApp" ng-cloak class="raml-console-body">
-  <raml-initializer>
+<raml-initializer>
 
-  </raml-initializer>
-  <script src="scripts/api-console-vendor.min.js"></script>
-  <script src="scripts/api-console.min.js"></script>
-  <script>
-    $.noConflict();
-  </script>
+</raml-initializer>
+<script src="scripts/api-console-vendor.min.js"></script>
+<script src="scripts/api-console.min.js"></script>
+<script>
+  $.noConflict();
+  // If api-console is accessed through proxy we need to prefix all requests
+  // with base path (everything before /api-console/)
+  RAML.Settings.proxy = window.location.pathname.substring(0,window.location.pathname.indexOf('/api-console/'));
+</script>
 </body>
 </html>

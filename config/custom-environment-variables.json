@@ -1,0 +1,7 @@
+{
+  "oauth": {
+    "client_id": "CLIENT_ID",
+    "client_secret": "CLIENT_SECRET",
+    "yaas_client": "YAAS_CLIENT"
+  }
+}

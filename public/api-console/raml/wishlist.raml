@@ -10,16 +10,42 @@ schemas:
   - wishlistItem: !include wishlistItem.json
   - error: !include https://api.yaas.io/patterns/v1/schema-error-message.json
 
-traits: 
-  - !include https://api.yaas.io/patterns/v2/trait-oauth2.yaml
-
 resourceTypes: 
   - !include https://api.yaas.io/patterns/v2/resource-type-element.yaml
   - !include https://api.yaas.io/patterns/v1/resource-type-collection.yaml
 
-/wishlists:
+securitySchemes:
+    - oauth_2_0:
+        description: |
+           OAuth 2.0 for authenticating all API requests.
+        type: OAuth 2.0
+        describedBy:
+            headers:
+                Authorization:
+                    description: |
+                       Used to send a valid OAuth 2 access token. Do not use
+                       with the "access_token" query string parameter.
+                    type: string
+            responses:
+                401:
+                    description: |
+                        Bad or expired token. This can happen if the user or YaaS
+                        revoked or expired an access token. To fix, you should re-
+                        authenticate the user.
+                403:
+                    description: |
+                        Bad OAuth request (wrong consumer key, bad nonce, expired
+                        timestamp...). Unfortunately, re-authenticating the user won't help here.
+        settings:
+          authorizationUri: https://api.yaas.io/hybris/oauth2/v1/authorize
+          accessTokenUri: https://api.yaas.io/hybris/oauth2/v1/token
+          authorizationGrants: [ credentials ]
+          scopes: ["myorg.wishlist_view", "myorg.wishlist_manage"]
+
+
+/{tenant}/wishlists:
   type: collection
-  is: [oauth2]
+  securedBy: [oauth_2_0]
   get:
     description: Gets all wishlists
     responses:
@@ -35,7 +61,7 @@ resourceTypes:
 
   /{wishlistId}:
     type: element
-    is: [oauth2]
+    securedBy: [oauth_2_0]
     uriParameters:
       wishlistId:
         description: the id of the wishlist to work on

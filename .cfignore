@@ -2,4 +2,3 @@ node_modules
 .idea
 .gradle
 local.json
-deploy.sh
