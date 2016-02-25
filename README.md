@@ -115,5 +115,8 @@ Real implementation require YaaS Client credentials provided in the configuratio
 You can set them by environment variables. See names of variables in the configoration file:
 [config/custom-environment-variables.json](config/custom-environment-variables.json)
 
+# License
+
+This project is licensed under the Apache Software License, v. 2 except as noted otherwise in the LICENSE file.
 
 
